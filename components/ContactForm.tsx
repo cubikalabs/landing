@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { contactFormSchema, type ContactFormData } from "@/app/lib/schema";
 import { supabase } from "@/app/lib/supabase";
+import { Turnstile } from "@marsidev/react-turnstile";
 
 export default function ContactForm() {
   const {
@@ -23,10 +24,34 @@ export default function ContactForm() {
   const [submitStatus, setSubmitStatus] = useState<
     "idle" | "success" | "error"
   >("idle");
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Inicializa el captcha de Turnstile aquí si es necesario
+    // Turnstile.init();
+  }, []);
 
   const onSubmit = async (data: ContactFormData) => {
+    if (!captchaToken) {
+      console.error("Captcha not solved");
+      return;
+    }
+
     setIsSubmitting(true);
     try {
+      // Envía el token del captcha al servidor para su validación
+      const captchaValidationResponse = await fetch("/api/validate-captcha", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token: captchaToken }),
+      });
+
+      if (!captchaValidationResponse.ok) {
+        throw new Error("Captcha validation failed");
+      }
+
       const { error } = await supabase
         .from("contact_submissions")
         .insert([
@@ -50,6 +75,11 @@ export default function ContactForm() {
       onSubmit={handleSubmit(onSubmit)}
       className="space-y-4 max-w-md mx-auto"
     >
+      <Turnstile
+        siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ""}
+        onSuccess={(token: string) => setCaptchaToken(token)}
+      />
+
       <div>
         <Label htmlFor="name">Name</Label>
         <Input
