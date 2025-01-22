@@ -75,11 +75,6 @@ export default function ContactForm() {
       onSubmit={handleSubmit(onSubmit)}
       className="space-y-4 max-w-md mx-auto"
     >
-      <Turnstile
-        siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ""}
-        onSuccess={(token: string) => setCaptchaToken(token)}
-      />
-
       <div>
         <Label htmlFor="name">Name</Label>
         <Input
@@ -115,6 +110,10 @@ export default function ContactForm() {
           <p className="text-red-300 text-sm mt-1">{errors.message.message}</p>
         )}
       </div>
+      <Turnstile
+        siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ""}
+        onSuccess={(token: string) => setCaptchaToken(token)}
+      />
       <Button type="submit" disabled={isSubmitting} className="w-full">
         {isSubmitting ? "Sending..." : "Send Message"}
       </Button>
