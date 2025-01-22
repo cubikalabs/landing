@@ -90,7 +90,7 @@ export default function ContactForm() {
       </Button>
       {submitStatus === "success" && (
         <p className="text-green-300 text-center">
-          Thank you for your message. We'll be in touch soon!
+          Thank you for your message. We&apos;ll be in touch soon!
         </p>
       )}
       {submitStatus === "error" && (
