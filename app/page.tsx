@@ -8,15 +8,13 @@ import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div>
       <Header />
-      <main className="flex-grow">
-        <Hero />
-        <AboutUs />
-        <Principles />
-        <Approach />
-        <Contact />
-      </main>
+      <Hero />
+      <AboutUs />
+      <Principles />
+      <Approach />
+      <Contact />
       <Footer />
     </div>
   );
