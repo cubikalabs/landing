@@ -1,23 +1,24 @@
-import "./globals.css"
-import { Inter } from "next/font/google"
+import "./globals.css";
+import { Lexend_Giga } from "next/font/google";
 
-const inter = Inter({ subsets: ["latin"] })
+const lexendGiga = Lexend_Giga({
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export const metadata = {
-  title: "Cúbika Labs - Boutique Software Factory",
-  description:
-    "Cúbika Labs is a boutique software factory specializing in custom solutions, delivering efficient, robust, and scalable products.",
-}
+  title: "Cubika Labs",
+  description: "Coming Soon",
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={lexendGiga.className}>{children}</body>
     </html>
-  )
+  );
 }
-
